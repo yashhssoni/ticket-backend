@@ -1,10 +1,10 @@
-# Stage 1: Build the application
-FROM maven:3.8.5-openjdk-17 AS build
+# Stage 1: Build using Java 21
+FROM maven:3.9.6-eclipse-temurin-21-alpine AS build
 COPY . .
 RUN mvn clean package -DskipTests
 
-# Stage 2: Run the application (Updated Base Image)
-FROM eclipse-temurin:17-jre
+# Stage 2: Run using Java 21 JRE
+FROM eclipse-temurin:21-jre-alpine
 COPY --from=build /target/*.jar demo.jar
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","demo.jar"]
