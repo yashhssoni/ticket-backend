@@ -19,6 +19,7 @@ public class SecurityConfig {
             UserProvisioningFilter userProvisioningFilter,
             JwtAuthenticationConverter jwtAuthenticationConverter) throws Exception {
         http
+                .cors(Customizer.withDefaults()) // ✅ Yeh line add karni hai zaroori hai
                 .authorizeHttpRequests(authorize ->
                         authorize
                                 .requestMatchers(HttpMethod.GET, "/api/v1/published-events/**").permitAll()
@@ -31,7 +32,7 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(oauth2 ->
                         oauth2.jwt(jwt ->
-                                jwt.jwtAuthenticationConverter(jwtAuthenticationConverter) // <= This here
+                                jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)
                         ))
                 .addFilterAfter(userProvisioningFilter, BearerTokenAuthenticationFilter.class);
 
